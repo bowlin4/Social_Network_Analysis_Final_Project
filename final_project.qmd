@@ -1,0 +1,192 @@
+---
+title: "Final Project"
+author: "Hannah Bowlin"
+format: pdf
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(igraph)
+library(tidygraph)
+library(ggraph)
+library(tidyverse)
+library(networkdata)
+set_graph_style(family='sans')
+```
+
+```{r, echo=FALSE}
+G <- law_cowork %>% as_tbl_graph()
+```
+
+Troutman Pepper
+
+600 Peachtree Street, N.E.
+
+Suite 3000
+
+Atlanta, GA 30308
+
+Social networks are a powerful tool for understanding how people communicate, and Troutman Pepper can use this tool to your advantage by improving outcomes of the firm. Hello, my name is Hannah Bowlin, and I am a student studying social networks and communication at Purdue University writing to offer a network analysis plan and evidence for why going the network analysis route is in the best interest of Troutman Pepper. The goal of the following network analysis proposal is to offer methods of gaining new, functional insights into the firm’s workforce that can be leveraged to improve outcomes like performance and efficiency of organizational processes. Therefore, the proposal seeks to address the following objectives:
+
+1.	Establish the areas where network analysis can have a significant, measurable impact on the Troutman Pepper law firm. 
+
+2.	Discuss benefits of network analysis. 
+
+3.	Identify influential individuals by measuring popularity and comparing across the three office locations. 
+
+4.	Consider if other relationships, like being alumni of the same law school, are related to coworking relationships. 
+
+5.	Identify individuals who have power in terms of bridging groups within the organization by measuring betweenness centrality and seniority. 
+
+6.	Investigate gender differences in relationships between coworkers. 
+
+## 1. Summary of challenges 
+As a major law firm in the United States, Troutman Pepper is a leader in the legal arena and must stay ahead of the game when it comes to adopting innovations in all aspects of business to stay competitive in this fast-paced field. For example, questions are already being asked about how artificial intelligence (AI) will impact the field of law (Armour & Sako, 2020; Kronblad et al., 2023). As law firms are becoming more global entities, there are challenges with managing this type of organization (Segal‐Horn & Dean, 2007). Echoing this, an investigation by Evans and Price (2017) found that leadership and management are two of the main areas in which law firms can improve when seeking better performance outcomes. 
+
+An ubiquitous issue facing the legal field is high voluntary turnover rates. For several reasons, employees in law firms tend to leave their organizations more so than other industries. One of those reasons is a desire to advance in the company, and if an employee does not succeed in doing so, may leave for other opportunities (Rebitzer & Taylor, 2007). Additionally, the high turnover rates may be due to dissatisfaction with the organization as many law firms are too focused on short-term gains rather than fostering an effective culture that has more of a long-run payoff (Molot, 2014). Employees are the main source of an organization’s knowledge and functions; without them, the organization would not exist. It is critical that firms like Troutman Pepper appropriately value the contributions of employees and understand that losing an employee is detrimental to the company, both in terms of the employee as a person and as a source of organizational knowledge. 
+
+One of Troutman Pepper’s most pressing concerns is likely to be the potential merger occurring with another major U.S. law firm, Locke Lord, following a trend of increased occurrence of mergers in the legal field (Merken, 2024). Mergers between organizations can have a marked impact on turnover, though this impact can be reduced with certain network structures, such as establishing connections with new coworkers in the organization they are merging with (Woehler et al., 2021). As Troutman Pepper is preparing to join their current network of employees with another organization’s previously separate network, understanding how to optimize the facilitation of network connections is important for a successful merger. For example, some employees may already have strong connections with individuals in the other organization, and these ties and individuals could be leveraged as leaders to begin the process of integrating the two groups. 
+
+## 2. Discuss the benefits of network analysis. 
+
+Network analysis is an efficient method of mapping interactions between members of an organization. Through simple surveys administered throughout the organization, and/or by collecting data on organizational members via human resources records, a network can be constructed that visualizes a bird’s eye view of the relationships within the organization. Network analysis also allows investigation into different types of relationships between members to more fully understand patterns of interaction, such as advice, friendship, and electronic communication networks. Using network analysis lends new explanatory power to organizations as network research has produced several theories and concepts that can shed light on phenomena observed in organizations. For example, homophily describes the tendency for relationships to form between similar individuals and this can be used to understand how relationships and groups form (McPherson et al., 2001). Furthermore, social exchange theory explains how individuals analyze the costs and benefits of pursuing or maintaining relationships with others (Katz et al., 2004). This theory has been utilized in the context of organizations by understanding how employees evaluate relationships based on potential or actual advantages and how some employees may be excluded from the group due to this (Scott et al., 2013).
+
+While it may remove some of the nuances of interactions and relationships, network analysis makes up for this disadvantage by being able to measure, to put a number on, relationship strength, power, and other characteristics. These measurable characteristics can then be easily compared to each other to reveal differences and interesting trends within the network. Network analysis reveals insights beyond the individual level, doing what complex surveys and experiments can produce. While individual characteristics are an important factor to consider, the unique aspect of network analysis is the connections between individuals that open up a whole new level of data to analyze and draw conclusions from. The power of network analysis also comes from the ability to develop visualizations of complex groups that efficiently and effectively convey large amounts of information. For organizations, where time is very valuable, being able to turn to easy-to-read, information-rich visualizations for insights into the workforce is a simple and effective method. There are a few options for pursuing network analysis, as well, including hiring outside consultants to complete the analysis and provide insights, or network analysis can be adopted by an organization’s existing human resources department which can conduct analyses in-house and can potentially provide more applicable insights as these individuals are part of the organization they are analyzing. 
+
+There is so much that organizations do not know about, as understanding everything about their workforce is impossible, but network analysis provides an opportunity to discover new insights that would otherwise be invisible. The field of social networks is constantly discovering new things about how humans interact in groups, and this new research has practical implications for organizations like Troutman Pepper. Organizations that stay ahead of the curve and on top of new discoveries in this field will have an advantage. 
+
+In Figure 1, the entire network of Troutman Pepper employees is visualized. The nodes represent employees, and the edges represent relationships between employees. The network is visualized using a force-directed layout, which places nodes that are more connected closer together. This visualization provides a high-level overview of the coworking relationships between employees at Troutman Pepper. In the following sections, specific aspects of the network will be analyzed to provide insights into the organization.
+
+```{r, echo=FALSE, out.width="100%", fig.cap="Full Network of Troutman Pepper Employees"}
+G %>% ggraph(layout = "fr") +
+  geom_edge_link(alpha = .5) +
+  geom_node_point(color = "red")
+```
+
+## 3. Measuring popularity across locations
+
+Popularity is defined here as the number of ties directed towards an individual. These ties may or may not be reciprocal. More popular individuals have more ties coming in while less popular individuals have fewer ties coming in. Popularity can be a useful measure of influence within an organization. In the context of Troutman Pepper, measuring popularity can provide insights into which employees are most influential within the organization. This is just one way to measure the power of individuals within a network. 
+
+Figure 2 shows the popularity of Troutman Pepper employees by office location. The size of the nodes represents the popularity of the employee, and the color of the nodes represents the office location of the employee. There are several popular individuals in the Boston office, fewer in the Hartford office, and one highly popular individual in the Providence office. Overall, the Providence office is much smaller than the other two offices, which makes it somewhat surprising that there is such a popular individual in that office. This may have occurred because the Providence office is the newest branch of Troutman Pepper and may have been established by a popular employee. Identification of influential individuals is important, particularly when dealing with a merger, because these indiviudals may be most effective at bridging the gap between the two organizations.
+
+```{r, echo=FALSE, out.width="100%", fig.cap="Popularity of Troutman Pepper Employees by Office Location"}
+
+G %>%
+  activate(nodes) %>%
+  mutate(popularity = centrality_degree(mode = "in")) %>%
+  mutate(office = as.factor(office)) %>%
+  mutate(node_label = row_number()) %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(alpha = .2) +
+  geom_node_point(aes(color = office, size = popularity)) +
+  geom_node_text(aes(label = node_label), color = "black", size = 4)+
+  scale_color_manual(values = c("1" = "purple", "2" = "#0099FF", "3" = "red"), name='Office', labels=c("1" = "Boston", "2" = "Hartford", "3" = "Providence")) +
+  labs(size = "Indegree Centrality")
+```
+
+## 4. Alumni relationships
+
+Betweenness centrality, in addition to indegree centrality, is a measure of a node's power within a network. Betweenness centrality measures the number of shortest paths that pass through a node. Nodes with high betweenness centrality are important for connecting different parts of the network. In the context of Troutman Pepper, measuring betweenness centrality can provide insights into which employees are most effective at bridging different groups within the organization.
+
+There appears to be no strong, obvious connection between alumni and coworking relationships. However, there are a few small clusters of employees who attended the same law school, such as nodes 19, 16, and 17 who each attended either Harvard or Yale. Unfortunately, the current data does not distinguish between these universities, and future surveys can improve on this limitation. 
+
+```{r, echo=FALSE, out.width="100%", fig.cap="Power of Troutman Pepper Employees by Law School"}
+G %>%
+  activate(nodes) %>%
+  mutate(bw_centrality = centrality_betweenness()) %>%
+  mutate(school=as.factor(law_school)) %>%
+  mutate(node_label = row_number()) %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(alpha = .2) +
+  geom_node_point(aes(color = school, size = bw_centrality)) +
+  geom_node_text(aes(label = node_label), color = "black", size = 4) +
+  scale_color_manual(values = c("1" = "red", "2" = "#0099FF", "3" = "purple"), name='Law School', labels=c("1" = "Harvard/Yale", "2" = "UConn", "3" = "Other")) +
+  labs(size = "Betweenness Centrality")
+```
+
+## 5. Identifying powerful individuals by seniority
+
+Troutman Pepper employees range from having been employed there for 1 to 32 years. Seniority is an important factor in determining power within an organization. More senior employees have more experience and knowledge of the organization, placing them in a more influential position to guide new members of the organization. Additionally, betweenness centrality allows measurement of the individual's power to bridge different groups within the organization. 
+
+Most Troutman Pepper employees have only been there for 1-10 years. There are a few employees in the 11-20 year tenure range who have high betweenness centrality, including nodes 16, 19, 24, 26, and 28. These individuals may have a higher potential to influence others in the network. A particularly interesting finding from Figure 4 is that node 4, one of the only nodes in the 31-40 year seniority range, has high betweenness centrality and visually appears to bridge to groups above and below this node. This individual may be particularly influential in the organization and/or occupy a significant leadership position. If this individual is not already in a leadership position, they may be a good candidate for a leadership role. Additionally, this structural pattern should be recorded to be able to identify it later in the firm's lifecycle. 
+
+```{r, echo=FALSE, out.width="100%", fig.cap="Power of Troutman Pepper Employees by Seniority"}
+
+seniority_levels <- c("1-10 years", "11-20 years", "21-30 years", "31-40 years")
+
+G %>%
+  activate(nodes) %>%
+  mutate(bw_centrality = centrality_betweenness()) %>%
+  mutate(seniority_group = cut(seniority, breaks = seq(0, max(seniority) + 10, by = 10), labels = FALSE)) %>%
+  mutate(seniority_group = ifelse(seniority_group == 0, 1, seniority_group)) %>%
+  mutate(seniority_group = factor(seniority_group, levels = seq_along(seniority_levels), labels = seniority_levels)) %>% 
+  mutate(node_label = row_number()) %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(alpha = .2) +
+  geom_node_point(aes(size = bw_centrality, color = seniority_group)) +
+  geom_node_text(aes(label = node_label), color = "black", size = 4) +
+  labs(size = "Betweenness Centrality") +
+  scale_color_manual(values = c("red", "#0099FF", "purple", "orange"), name='Seniority', labels = c("1-10 years", "11-20 years", "21-30 years", "31-40 years"))
+```
+
+Figure 5 depicts homophily by showing nodes that are similar in length of time that they have been employed at Troutman Pepper. IN this figure, node 4 is again in a position of power. 
+
+```{r, echo=FALSE, out.width="100%", fig.cap="Homophily in terms of Seniority of Troutman Pepper Employees"}
+G %>%
+  activate(nodes) %>%
+  mutate(node_label = row_number()) %>%
+  activate(edges) %>%
+  mutate(age_diff = abs(.N()$age[from] - .N()$age[to])) %>%
+  ggraph(layout = 'stress') + 
+  geom_edge_fan(aes(color = age_diff), alpha = .4) +
+  geom_node_point(aes(color=age), size = 3) +
+  geom_node_text(aes(label = node_label), color = "black", size = 4) +
+  scale_edge_color_gradient2()
+```
+
+## 6. Gender differences
+
+When looking at indegree centrality by gender in Figure 6, there are few obvious differences in popularity based on gender. One of the most popular individuals, node 4, is male, and many of the other highly popular nodes are male, as well. However, this may be due to there being an overall higher number of males in the organization to start with. More testing would need to be done to understand if there is a significant difference in popularity between genders. Monitoring these measures could be important for ensuring that there a no groups being excluded from the network. 
+
+```{r, echo=FALSE, out.width="100%", fig.cap="Popularity of Troutman Pepper Employees by Gender"}
+G %>%
+  activate(nodes) %>%
+  mutate(popularity = centrality_degree(mode = "in")) %>%
+  mutate(gender=as.factor(gender)) %>%
+  mutate(node_label = row_number()) %>%
+  ggraph(layout = "fr") +
+  geom_edge_link(alpha = .2) +
+  geom_node_point(aes(color = gender, size = popularity)) +
+  geom_node_text(aes(label = node_label), color = "black", size = 4) +
+  scale_color_manual(values = c("1" = "purple", "2" = "#0099FF"), name='Gender', labels=c("1" = "Male", "2" = "Female")) +
+  labs(size = "Indegree Centrality")
+```
+
+## Conclusion
+
+Overall, the preceding visualizations provide unique, compelling insights into the inner workings of the Troutman Pepper law firm. These are just a few of the possibilities for utilizing network analysis, and I hope this helps you understand the potential benefits of adopting this method. Network analysis can provide a wealth of information about the organization that would otherwise be invisible. By understanding the relationships between employees, Troutman Pepper can better understand how to optimize the organization for success. Thank you for your time. We would love to set up an in-person meeting to further understand the specific needs of the Troutman Pepper firm and tailor a unique plan for improving further upon your firm’s structure, processes, and outcomes. 
+
+## References
+
+Armour, J., & Sako, M. (2020). AI-enabled business models in legal services: From traditional law firms to next-generation law companies? Journal of Professions and Organization, 7(1), 27–46. https://doi.org/10.1093/jpo/joaa001
+
+Evans, N., & Price, J. (2017). Managing information in law firms: Changes and challenges. Information Research: An International Electronic Journal, 22(1). 
+https://eric.ed.gov/?id=EJ1138631
+
+Katz, N., Lazer, D., Arrow, H., & Contractor, N. (2004). Network Theory and Small Groups. Small Group Research, 35(3), 307–332. https://doi.org/10.1177/1046496404264941
+
+Kronblad, C., Pregmark, J. E., & Berggren, R. (2023). Difficulties to digitalize: Ambidexterity challenges in law firms. Journal of Service Theory and Practice, 33(2), 217–236. https://doi.org/10.1108/JSTP-05-2022-0120
+
+McPherson, M., Smith-Lovin, L., & Cook, J. M. (2001). Birds of a feather: Homophily in social networks. Annual Review of Sociology, 27, 415–444.
+Merken, S. (2024, April 18). US law firms Troutman Pepper, Locke Lord in talks to merge. Reuters. https://www.reuters.com/legal/legalindustry/us-law-firms-troutman-pepper-locke-lord-talks-merge-2024-04-18/
+
+Molot, J. T. (2014). What’s Wrong with Law Firms: A Corporate Finance Solution to Law Firm Short-Termism. Southern California Law Review, 88, 1.
+
+Rebitzer, J. B., & Taylor, L. J. (2007). When knowledge is an asset: Explaining the organizational structure of large law firms. Journal of Labor Economics, 25(2), 201–229. https://doi.org/10.1086/510761
+
+Scott, K. L., Restubog, S. L. D., & Zagenczyk, T. J. (2013). A social exchange-based model of the antecedents of workplace exclusion. Journal of Applied Psychology, 98(1), 37–48. https://doi.org/10.1037/a0030135
+
+Segal‐Horn, S., & Dean, A. (2007). The globalization of law firms: Managerial issues. International Journal of Service Industry Management, 18(2), 206–219. 
+https://doi.org/10.1108/09564230710737835
+
+Woehler, M., Floyd, T. M., Shah, N., Marineau, J. E., Sung, W., Grosser, T. J., Fagan, J., & Labianca, G. (2021). Turnover during a corporate merger: How workplace network change influences staying. Journal of Applied Psychology, 106(12), 1939–1949. https://doi.org/10.1037/apl0000864
